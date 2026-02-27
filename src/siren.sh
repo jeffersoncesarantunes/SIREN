@@ -33,15 +33,22 @@ stream_analysis() {
     echo -e "${YELLOW}[!] Starting acquisition from:${NC} $source"
     echo "[!] Results will be saved to: $output_dir"
     
-    cat "$source" | tee >(sha256sum > "$output_dir/dump_$timestamp.sha256") \
-                  | strings > "$output_dir/strings_$timestamp.txt"
+    if [[ "$source" == "/dev/mem" ]]; then
+        echo -e "${RED}[!] WARNING: Reading physical RAM. System freeze possible.${NC}"
+        dd if="$source" bs=1M count=100 2>/dev/null | tee >(sha256sum > "$output_dir/mem_dump_$timestamp.sha256") \
+                                                   | strings > "$output_dir/mem_strings_$timestamp.txt"
+    else
+        cat "$source" | tee >(sha256sum > "$output_dir/dump_$timestamp.sha256") \
+                      | strings > "$output_dir/strings_$timestamp.txt"
+    fi
 
     echo -e "${GREEN}[+] Pipeline completed successfully.${NC}"
 }
 
 echo -e "1) Map Memory (iomem)"
-echo -e "2) Test Forensic Pipeline (/proc/version)"
-echo -e "3) Exit"
+echo -e "2) Test Pipeline (/proc/version)"
+echo -e "3) Live Memory Extraction (DANGEROUS)"
+echo -e "4) Exit"
 read -p "Select an option: " opt
 
 case $opt in
@@ -52,6 +59,11 @@ case $opt in
         stream_analysis "/proc/version"
         ;;
     3)
+        echo -e "${RED}⚠️  ACTION REQUIRED: To prevent system freezing, ignore reserved ranges.${NC}"
+        read -p "Continue with 100MB sample from /dev/mem? (y/n): " confirm
+        [[ $confirm == "y" ]] && stream_analysis "/dev/mem"
+        ;;
+    4)
         echo "Exiting..."
         exit 0
         ;;
