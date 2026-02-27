@@ -1,0 +1,5 @@
+# Ignore all memory dumps
+dumps/*
+
+# Keep the dumps directory in Git but exclude its content
+!dumps/.gitkeep

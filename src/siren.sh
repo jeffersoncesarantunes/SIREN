@@ -1,45 +1,61 @@
 #!/usr/bin/env bash
-# S.I.R.E.N. - Shell Interactive Runtime Entity Notifier
-# Author: Jefferson Cesar Antunes
 
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
 NC='\033[0m'
 
 echo -e "${RED}🚨 S.I.R.E.N. - Forensic Memory Streamer${NC}"
 echo "------------------------------------------"
 
-# Verificação de Root
 if [[ $EUID -ne 0 ]]; then
-   echo "Este script deve ser executado como root."
+   echo -e "${RED}[!] Error: This script must be run as root.${NC}"
    exit 1
 fi
+
+map_system_ram() {
+    echo -e "${GREEN}[+] Mapping safe System RAM regions...${NC}"
+    echo "--------------------------------------------------------"
+    grep "System RAM" /proc/iomem | while read -r line; do
+        range=$(echo $line | cut -d' ' -f1)
+        echo -e "Address: ${YELLOW}$range${NC} [SAFE RANGE]"
+    done
+    echo "--------------------------------------------------------"
+}
 
 stream_analysis() {
     local source=$1
     local output_dir="../dumps"
     local timestamp=$(date +%Y%m%d_%H%M%S)
     
-    # Garante que a pasta de destino existe
     mkdir -p "$output_dir"
     
-    echo -e "${YELLOW}[!] Iniciando aquisição de:${NC} $source"
-    echo "[!] Os resultados serão salvos em: $output_dir"
+    echo -e "${YELLOW}[!] Starting acquisition from:${NC} $source"
+    echo "[!] Results will be saved to: $output_dir"
     
-    # O Pipeline Real
     cat "$source" | tee >(sha256sum > "$output_dir/dump_$timestamp.sha256") \
                   | strings > "$output_dir/strings_$timestamp.txt"
 
-    echo -e "${YELLOW}[+] Processo concluído.${NC}"
+    echo -e "${GREEN}[+] Pipeline completed successfully.${NC}"
 }
 
-# --- Lógica de Execução ---
+echo -e "1) Map Memory (iomem)"
+echo -e "2) Test Forensic Pipeline (/proc/version)"
+echo -e "3) Exit"
+read -p "Select an option: " opt
 
-# Por enquanto, vamos testar com um arquivo seguro do sistema (ex: /proc/version)
-# para validar se o pipeline gera os arquivos na pasta /dumps
-read -p "Deseja realizar um teste de pipeline em /proc/version? (y/n): " confirm
-if [[ $confirm == "y" ]]; then
-    stream_analysis "/proc/version"
-else
-    echo "Operação cancelada."
-fi
+case $opt in
+    1)
+        map_system_ram
+        ;;
+    2)
+        stream_analysis "/proc/version"
+        ;;
+    3)
+        echo "Exiting..."
+        exit 0
+        ;;
+    *)
+        echo "Invalid option."
+        ;;
+esac
