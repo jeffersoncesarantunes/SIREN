@@ -8,6 +8,25 @@ S.I.R.E.N. is a high-speed forensic memory acquisition tool designed for Linux s
 - **Kernel-Aware Mapping:** Identifies safe "System RAM" ranges to avoid hardware-reserved zones.
 - **Safety First:** Includes logic to handle kernel-level access denials (STRICT_DEVMEM).
 
+## 🚀 Quick Start
+
+### 1. Clone & Access
+```bash
+
+git clone [https://github.com/jeffersoncesarantunes/S.I.R.E.N.git](https://github.com/jeffersoncesarantunes/S.I.R.E.N.git)
+cd S.I.R.E.N
+
+```
+
+### 2. Set Permissions & Run (Requires Root)
+
+```bash
+
+chmod +x src/siren.sh
+sudo ./src/siren.sh
+
+```
+
 ## ● Critical Safety: The "ACTION REQUIRED" Warning
 
 When performing **Option 3 (Live Memory Extraction)**, the system accesses `/dev/mem`. 
