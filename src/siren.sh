@@ -47,6 +47,7 @@ stream_analysis() {
 automated_extraction() {
     local output_dir="../dumps"
     local timestamp=$(date +%Y%m%d_%H%M%S)
+    local output_file="$output_dir/full_mem_scan_$timestamp.bin"
     mkdir -p "$output_dir"
 
     echo -e "${YELLOW}[!] Starting Automated Safe Range Extraction...${NC}"
@@ -60,16 +61,25 @@ automated_extraction() {
         end_dec=$((16#$end_hex))
         size=$((end_dec - start_dec))
         
-        echo -e "${GREEN}[+] Extracting: $start_hex ($size bytes)${NC}"
+        echo -n -e "${GREEN}[+] Extracting: $start_hex ($size bytes)... ${NC}"
         
-        dd if=/dev/mem bs=1 skip=$start_dec count=$size 2>/dev/null >> "$output_dir/full_mem_scan_$timestamp.bin"
+        # Tentativa de extração com verificação de erro
+        if dd if=/dev/mem bs=1 skip=$start_dec count=$size 2>/dev/null >> "$output_file"; then
+            echo -e "${GREEN}[OK]${NC}"
+        else
+            echo -e "${RED}[DENIED BY KERNEL]${NC}"
+        fi
     done
 
-    echo -e "${YELLOW}[*] Generating strings and hash for full scan...${NC}"
-    sha256sum "$output_dir/full_mem_scan_$timestamp.bin" > "$output_dir/full_mem_scan_$timestamp.sha256"
-    strings "$output_dir/full_mem_scan_$timestamp.bin" > "$output_dir/full_mem_scan_$timestamp.txt"
-
-    echo -e "${GREEN}[+] Automated scan finished. Results in $output_dir${NC}"
+    if [[ -s "$output_file" ]]; then
+        echo -e "${YELLOW}[*] Generating strings and hash for collected data...${NC}"
+        sha256sum "$output_file" > "${output_file%.bin}.sha256"
+        strings "$output_file" > "${output_file%.bin}.txt"
+        echo -e "${GREEN}[+] Automated scan finished. Results in $output_dir${NC}"
+    else
+        echo -e "${RED}[!] Error: No data could be collected. Check 'iomem=relaxed' boot parameter.${NC}"
+        rm "$output_file"
+    fi
 }
 
 echo -e "1) Map Memory (iomem)"
