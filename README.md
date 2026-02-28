@@ -2,6 +2,12 @@
 
 S.I.R.E.N. is a high-speed forensic memory acquisition tool designed for Linux systems. It streams physical RAM content directly into an analytical pipeline, performing integrity hashing and string extraction in real-time.
 
+## ● Key Features
+- **Forensic Pipeline:** Integrated SHA256 hashing and string extraction during acquisition.
+- **Pre-Acquisition Storage Check:** (New) Automatically verifies if your disk has enough space to hold the RAM dump, preventing system instability.
+- **Kernel-Aware Mapping:** Identifies safe "System RAM" ranges to avoid hardware-reserved zones.
+- **Safety First:** Includes logic to handle kernel-level access denials (STRICT_DEVMEM).
+
 ## ● Critical Safety: The "ACTION REQUIRED" Warning
 
 When performing **Option 3 (Live Memory Extraction)**, the system accesses `/dev/mem`. 
@@ -26,12 +32,18 @@ sha256sum -c dump_filename.sha256
 
 ```
 
+### 2. Forensic Grep
+
 ```bash
+
 grep -Ei "pass|user|config" mem_strings.txt
 
 ```
 
+### 3. Hexadecimal Inspection
+
 ```bash
+
 hexdump -C mem_dump.bin | head -n 20
 
 ```
