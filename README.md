@@ -1,6 +1,12 @@
 # 🐧 S.I.R.E.N. - Shell Interactive Runtime Entity Notifier
 
-S.I.R.E.N. is a high-speed forensic memory acquisition tool designed for Linux systems. It streams physical RAM content directly into an analytical pipeline, performing integrity hashing and string extraction in real-time.
+High-speed forensic memory acquisition tool focused on live streaming and integrity validation.
+
+    Project: S.I.R.E.N. (Shell Interactive Runtime Entity Notifier)
+    Author: Jefferson Cesar Antunes
+    License: MIT
+    Version: 1.2.0
+    Description: Forensic Memory Streamer & Real-time Integrity Auditor for Linux.
 
 ## ● Key Features
 - **Forensic Pipeline:** Integrated SHA256 hashing and string extraction during acquisition.
