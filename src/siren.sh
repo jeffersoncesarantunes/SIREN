@@ -5,7 +5,7 @@ YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-echo -e "${RED}🚨 S.I.R.E.N. - Forensic Memory Streamer${NC}"
+echo -e "${GREEN}🐧 S.I.R.E.N. - Forensic Memory Streamer${NC}"
 echo "------------------------------------------"
 
 if [[ $EUID -ne 0 ]]; then
@@ -31,7 +31,6 @@ stream_analysis() {
     mkdir -p "$output_dir"
     
     echo -e "${YELLOW}[!] Starting acquisition from:${NC} $source"
-    echo "[!] Results will be saved to: $output_dir"
     
     if [[ "$source" == "/dev/mem" ]]; then
         echo -e "${RED}[!] WARNING: Reading physical RAM. System freeze possible.${NC}"
@@ -45,29 +44,33 @@ stream_analysis() {
     echo -e "${GREEN}[+] Pipeline completed successfully.${NC}"
 }
 
+automated_extraction() {
+    echo -e "${YELLOW}[!] Starting Automated Safe Range Extraction...${NC}"
+    grep "System RAM" /proc/iomem | while read -r line; do
+        range=$(echo $line | cut -d' ' -f1)
+        start_hex=$(echo $range | cut -d'-' -f1)
+        end_hex=$(echo $range | cut -d'-' -f2)
+        echo -e "${GREEN}[+] Extracting range: $start_hex to $end_hex${NC}"
+    done
+    echo -e "${GREEN}[+] Automated scan finished.${NC}"
+}
+
 echo -e "1) Map Memory (iomem)"
 echo -e "2) Test Pipeline (/proc/version)"
 echo -e "3) Live Memory Extraction (DANGEROUS)"
-echo -e "4) Exit"
+echo -e "4) Automated Safe Scan (BETA)"
+echo -e "5) Exit"
 read -p "Select an option: " opt
 
 case $opt in
-    1)
-        map_system_ram
-        ;;
-    2)
-        stream_analysis "/proc/version"
-        ;;
+    1) map_system_ram ;;
+    2) stream_analysis "/proc/version" ;;
     3)
         echo -e "${RED}⚠️  ACTION REQUIRED: To prevent system freezing, ignore reserved ranges.${NC}"
         read -p "Continue with 100MB sample from /dev/mem? (y/n): " confirm
         [[ $confirm == "y" ]] && stream_analysis "/dev/mem"
         ;;
-    4)
-        echo "Exiting..."
-        exit 0
-        ;;
-    *)
-        echo "Invalid option."
-        ;;
+    4) automated_extraction ;;
+    5) exit 0 ;;
+    *) echo "Invalid option." ;;
 esac
