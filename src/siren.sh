@@ -13,6 +13,21 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+check_storage() {
+    local ram_size=$(free -b | awk '/^Mem:/ {print $2}')
+    local disk_free=$(df -B1 . | awk 'NR==2 {print $4}')
+
+    if [[ -n "$ram_size" && -n "$disk_free" ]]; then
+        if [ "$ram_size" -gt "$disk_free" ]; then
+            echo -e "${RED}[!] WARNING: Potential insufficient disk space.${NC}"
+            echo -e "Required (RAM): $(free -h | awk '/^Mem:/ {print $2}')"
+            echo -e "Available (Disk): $(df -h . | awk 'NR==2 {print $4}')"
+            read -p "Proceed anyway? (y/N): " choice
+            [[ "$choice" != "y" ]] && exit 1
+        fi
+    fi
+}
+
 map_system_ram() {
     echo -e "${GREEN}[+] Mapping safe System RAM regions...${NC}"
     echo "--------------------------------------------------------"
@@ -33,6 +48,7 @@ stream_analysis() {
     echo -e "${YELLOW}[!] Starting acquisition from:${NC} $source"
     
     if [[ "$source" == "/dev/mem" ]]; then
+        check_storage
         echo -e "${RED}[!] WARNING: Reading physical RAM. System freeze possible.${NC}"
         dd if="$source" bs=1M count=100 2>/dev/null | tee >(sha256sum > "$output_dir/mem_dump_$timestamp.sha256") \
                                                    | strings > "$output_dir/mem_strings_$timestamp.txt"
@@ -45,6 +61,7 @@ stream_analysis() {
 }
 
 automated_extraction() {
+    check_storage
     local output_dir="../dumps"
     local timestamp=$(date +%Y%m%d_%H%M%S)
     local output_file="$output_dir/full_mem_scan_$timestamp.bin"
@@ -63,7 +80,6 @@ automated_extraction() {
         
         echo -n -e "${GREEN}[+] Extracting: $start_hex ($size bytes)... ${NC}"
         
-        # Tentativa de extração com verificação de erro
         if dd if=/dev/mem bs=1 skip=$start_dec count=$size 2>/dev/null >> "$output_file"; then
             echo -e "${GREEN}[OK]${NC}"
         else
