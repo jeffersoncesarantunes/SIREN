@@ -45,14 +45,31 @@ stream_analysis() {
 }
 
 automated_extraction() {
+    local output_dir="../dumps"
+    local timestamp=$(date +%Y%m%d_%H%M%S)
+    mkdir -p "$output_dir"
+
     echo -e "${YELLOW}[!] Starting Automated Safe Range Extraction...${NC}"
+    
     grep "System RAM" /proc/iomem | while read -r line; do
         range=$(echo $line | cut -d' ' -f1)
         start_hex=$(echo $range | cut -d'-' -f1)
         end_hex=$(echo $range | cut -d'-' -f2)
-        echo -e "${GREEN}[+] Extracting range: $start_hex to $end_hex${NC}"
+        
+        start_dec=$((16#$start_hex))
+        end_dec=$((16#$end_hex))
+        size=$((end_dec - start_dec))
+        
+        echo -e "${GREEN}[+] Extracting: $start_hex ($size bytes)${NC}"
+        
+        dd if=/dev/mem bs=1 skip=$start_dec count=$size 2>/dev/null >> "$output_dir/full_mem_scan_$timestamp.bin"
     done
-    echo -e "${GREEN}[+] Automated scan finished.${NC}"
+
+    echo -e "${YELLOW}[*] Generating strings and hash for full scan...${NC}"
+    sha256sum "$output_dir/full_mem_scan_$timestamp.bin" > "$output_dir/full_mem_scan_$timestamp.sha256"
+    strings "$output_dir/full_mem_scan_$timestamp.bin" > "$output_dir/full_mem_scan_$timestamp.txt"
+
+    echo -e "${GREEN}[+] Automated scan finished. Results in $output_dir${NC}"
 }
 
 echo -e "1) Map Memory (iomem)"
