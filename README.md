@@ -61,7 +61,6 @@ To bypass this for educational or forensic purposes:
 
 ```bash
 sudo grub-mkconfig -o /boot/grub/grub.cfg
-sudo reboot
 
 ```
-> **Note:** Only perform this in controlled, non-production environments.
+> **Note:** A system reboot is required for these changes to take effect. Please save your work before restarting. 
