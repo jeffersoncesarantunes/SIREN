@@ -63,4 +63,4 @@ To bypass this for educational or forensic purposes:
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 ```
-> **Note:** A system reboot is required for these changes to take effect. Please save your work before restarting. 
+> **Note for other Bootloaders:** If you use **systemd-boot**, **rEFInd**, or others, ensure `iomem=relaxed` is added to your specific boot configuration (e.g., `loader.conf`). A system reboot is always required for kernel changes to take effect. Please save your work before restarting.
