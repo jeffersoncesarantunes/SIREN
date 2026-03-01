@@ -2,11 +2,11 @@
 
 High-speed forensic memory acquisition tool focused on live streaming and integrity validation.
 
-    Project: S.I.R.E.N. (Shell Interactive Runtime Entity Notifier)  
-    Author: Jefferson Cesar Antunes  
-    License: MIT  
-    Version: 1.3.0  
-    Description: Forensic Memory Streamer & Real-time Integrity Auditor for Linux.
+> **Project:** S.I.R.E.N. (Shell Interactive Runtime Entity Notifier)  
+> **Author:** Jefferson Cesar Antunes  
+> **License:** MIT  
+> **Version:** 1.3.0  
+> **Description:** Forensic Memory Streamer & Real-time Integrity Auditor for Linux.
 
 ● Etymology & Origin
 
@@ -40,6 +40,7 @@ All inspection is designed to minimize the forensic footprint on the target syst
 
 ● Example Output
 
+```text
 ┌────────────────────────────────────────────────────────┐
 │ [+] Mapping safe System RAM regions...                 │
 ├────────────────────────────────────────────────────────┤
@@ -49,6 +50,7 @@ All inspection is designed to minimize the forensic footprint on the target syst
 └────────────────────────────────────────────────────────┘
 [!] Starting acquisition from: /dev/mem
 [+] Pipeline completed successfully. Results in ../dumps
+```
 
 ● Remote Forensic Streaming (Option 5)
 
