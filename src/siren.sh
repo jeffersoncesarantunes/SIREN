@@ -98,11 +98,38 @@ automated_extraction() {
     fi
 }
 
+remote_forensic_stream() {
+    echo -e "${YELLOW}[!] Remote Forensic Exfiltration Mode${NC}"
+    read -p "Enter Target IP: " target_ip
+    read -p "Enter Target Port (default 4444): " target_port
+    target_port=${target_port:-4444}
+
+    if [[ -z "$target_ip" ]]; then
+        echo -e "${RED}[!] Error: Target IP is required.${NC}"
+        return
+    fi
+
+    local timestamp=$(date +%Y%m%d_%H%M%S)
+    local output_dir="../dumps"
+    mkdir -p "$output_dir"
+
+    echo -e "${GREEN}[+] Streaming memory to $target_ip:$target_port...${NC}"
+    echo -e "${YELLOW}[*] Calculating local integrity hash (SHA256) during stream...${NC}"
+
+    if dd if=/dev/mem bs=1M count=100 2>/dev/null | tee >(sha256sum > "$output_dir/remote_stream_$timestamp.sha256") | nc -v "$target_ip" "$target_port"; then
+        echo -e "${GREEN}[+] Remote stream finished.${NC}"
+    else
+        echo -e "${RED}[!] Stream interrupted. Potential Kernel restriction (STRICT_DEVMEM).${NC}"
+        echo -e "${YELLOW}[i] Hint: Try booting with 'iomem=relaxed'.${NC}"
+    fi
+}
+
 echo -e "1) Map Memory (iomem)"
 echo -e "2) Test Pipeline (/proc/version)"
 echo -e "3) Live Memory Extraction (DANGEROUS)"
 echo -e "4) Automated Safe Scan (BETA)"
-echo -e "5) Exit"
+echo -e "5) Remote Forensic Stream (Netcat)"
+echo -e "6) Exit"
 read -p "Select an option: " opt
 
 case $opt in
@@ -114,6 +141,7 @@ case $opt in
         [[ $confirm == "y" ]] && stream_analysis "/dev/mem"
         ;;
     4) automated_extraction ;;
-    5) exit 0 ;;
+    5) remote_forensic_stream ;;
+    6) exit 0 ;;
     *) echo "Invalid option." ;;
 esac
