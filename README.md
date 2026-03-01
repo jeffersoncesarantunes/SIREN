@@ -130,9 +130,9 @@ To bypass this for forensic purposes, add `iomem=relaxed` to your boot parameter
 
 ## ● Tech Stack
 
-    Language: Bash Script
-    Data Source: /dev/mem, /proc/iomem
-    Utilities: dd, sha256sum, strings, nc
+- **Language:** Bash Script
+- **Data Source:** `/dev/mem`, `/proc/iomem`
+- **Utilities:** `dd`, `sha256sum`, `strings`, `nc`
 
 ## ● Roadmap
 
