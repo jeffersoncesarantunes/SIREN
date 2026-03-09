@@ -5,9 +5,6 @@ YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
 NC='\033[0m'
 
-echo -e "${GREEN}🐧 S.I.R.E.N. - Forensic Memory Streamer${NC}"
-echo "------------------------------------------"
-
 if [[ $EUID -ne 0 ]]; then
    echo -e "${RED}[!] Error: This script must be run as root.${NC}"
    exit 1
@@ -124,24 +121,40 @@ remote_forensic_stream() {
     fi
 }
 
-echo -e "1) Map Memory (iomem)"
-echo -e "2) Test Pipeline (/proc/version)"
-echo -e "3) Live Memory Extraction (DANGEROUS)"
-echo -e "4) Automated Safe Scan (BETA)"
-echo -e "5) Remote Forensic Stream (Netcat)"
-echo -e "6) Exit"
-read -p "Select an option: " opt
+while true; do
+    clear
+    echo -e "${GREEN}🐧 S.I.R.E.N. - Forensic Memory Streamer${NC}"
+    echo "------------------------------------------"
+    echo -e "1) Map Memory (iomem)"
+    echo -e "2) Test Pipeline (/proc/version)"
+    echo -e "3) Live Memory Extraction (DANGEROUS)"
+    echo -e "4) Automated Safe Scan (BETA)"
+    echo -e "5) Remote Forensic Stream (Netcat)"
+    echo -e "6) Exit"
+    echo "------------------------------------------"
+    read -p "Select an option: " opt
 
-case $opt in
-    1) map_system_ram ;;
-    2) stream_analysis "/proc/version" ;;
-    3)
-        echo -e "${RED}⚠️  ACTION REQUIRED: To prevent system freezing, ignore reserved ranges.${NC}"
-        read -p "Continue with 100MB sample from /dev/mem? (y/n): " confirm
-        [[ $confirm == "y" ]] && stream_analysis "/dev/mem"
-        ;;
-    4) automated_extraction ;;
-    5) remote_forensic_stream ;;
-    6) exit 0 ;;
-    *) echo "Invalid option." ;;
-esac
+    case $opt in
+        1) map_system_ram ;;
+        2) stream_analysis "/proc/version" ;;
+        3)
+            echo -e "${RED}⚠️  ACTION REQUIRED: To prevent system freezing, ignore reserved ranges.${NC}"
+            read -p "Continue with 100MB sample from /dev/mem? (y/n): " confirm
+            [[ $confirm == "y" ]] && stream_analysis "/dev/mem"
+            ;;
+        4) automated_extraction ;;
+        5) remote_forensic_stream ;;
+        6) 
+            echo -e "${YELLOW}Exiting SIREN...${NC}"
+            exit 0 
+            ;;
+        *) 
+            echo -e "${RED}Invalid option.${NC}" 
+            sleep 1
+            continue
+            ;;
+    esac
+
+    echo -e "\n${YELLOW}-- Press ENTER to return to menu --${NC}"
+    read
+done
