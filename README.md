@@ -3,14 +3,10 @@
 [![Linux](https://img.shields.io/badge/platform-linux-blue)](https://kernel.org)
 [![Bash](https://img.shields.io/badge/language-bash-green)](https://www.gnu.org/software/bash/)
 [![License](https://img.shields.io/badge/license-MIT-red)](LICENSE)
+![Version](https://img.shields.io/badge/version-1.3.0-orange)
+![Status](https://img.shields.io/badge/status-active-success)
 
-High-speed forensic memory acquisition tool focused on live streaming and integrity validation.
-
-> **Project:** S.I.R.E.N (Shell Interactive Runtime Entity Notifier)  
-> **Author:** Jefferson Cesar Antunes  
-> **License:** MIT  
-> **Version:** 1.3.0  
-> **Description:** Forensic Memory Streamer & Real-time Integrity Auditor for Linux.  
+High-speed Linux memory forensics tool for live acquisition, streaming and integrity auditing.
 
 ## ● Etymology & Origin
 
