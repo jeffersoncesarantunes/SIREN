@@ -43,16 +43,15 @@ All inspection is designed to minimize the forensic footprint on the target syst
 ## ● Example Output
 
 ```text
-┌────────────────────────────────────────────────────────┐
-│ [+] Mapping safe System RAM regions...                 │
-├────────────────────────────────────────────────────────┤
-│ Address: 00001000-0009fbff [SAFE RANGE]                │
-│ Address: 00100000-b697efff [SAFE RANGE]                │
-│ Address: b6b5f000-b6b5ffff [SAFE RANGE]                │
-└────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────┐
+│ [+] Mapping safe System RAM regions... │
+├────────────────────────────────────────┤
+│ Address: 00001000-0009fbff [SAFE RANGE]│
+│ Address: 00100000-b697efff [SAFE RANGE]│
+└────────────────────────────────────────┘
 
 [!] Starting acquisition from: /dev/mem
-[+] Pipeline completed successfully. Results in ../dumps
+[+] Pipeline completed successfully
 ```
 ## ● Project in Action
 
