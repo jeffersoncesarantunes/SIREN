@@ -6,11 +6,11 @@
 
 High-speed forensic memory acquisition tool focused on live streaming and integrity validation.
 
-> **Project:** S.I.R.E.N (Shell Interactive Runtime Entity Notifier)
-> **Author:** Jefferson Cesar Antunes
-> **License:** MIT
-> **Version:** 1.3.0
-> **Description:** Forensic Memory Streamer & Real-time Integrity Auditor for Linux.
+> **Project:** S.I.R.E.N (Shell Interactive Runtime Entity Notifier)  
+> **Author:** Jefferson Cesar Antunes  
+> **License:** MIT  
+> **Version:** 1.3.0  
+> **Description:** Forensic Memory Streamer & Real-time Integrity Auditor for Linux.  
 
 ## ● Etymology & Origin
 
