@@ -1,5 +1,16 @@
-# Ignore all memory dumps
-dumps/*
+# Ignorar binários e dumps de memória
+dumps/*.bin
+dumps/*.raw
+dumps/*.dmp
 
-# Keep the dumps directory in Git but exclude its content
+# Ignorar logs e análises forenses
+dumps/*.txt
+dumps/*.sha256
+dumps/*.log
+
+# Manter a pasta, mas ignorar o conteúdo
 !dumps/.gitkeep
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
