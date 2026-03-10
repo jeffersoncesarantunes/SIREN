@@ -72,7 +72,7 @@ When performing Option 3 (Live Memory Extraction), the system accesses /dev/mem.
 
 ## ● Features
 
-- Remote Exfiltration via Netcat.
+- Remote Exfiltration via Netcat with pre-flight connectivity check.
 - Live SHA256 integrity auditing.
 - Real-time string extraction.
 - Pre-acquisition disk space verification.
@@ -82,7 +82,7 @@ When performing Option 3 (Live Memory Extraction), the system accesses /dev/mem.
 ## ● Operational Integrity
 
 ## *S.I.R.E.N. is designed for forensic stability:*
-
+- Pre-flight network validation to prevent resource exhaustion on unreachable targets.
 - Read-only access to system memory devices.
 - Parallel processing to reduce I/O wait times.
 - No modification of kernel structures or process states.

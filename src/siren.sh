@@ -106,6 +106,14 @@ remote_forensic_stream() {
         return
     fi
 
+    echo -ne "${YELLOW}[*] Checking connection to $target_ip:$target_port... ${NC}"
+    if ! nc -z -w 3 "$target_ip" "$target_port" 2>/dev/null; then
+        echo -e "${RED}[FAILED]${NC}"
+        echo -e "${RED}[!] Error: Destination unreachable. Start the listener (nc -l) first.${NC}"
+        return
+    fi
+    echo -e "${GREEN}[READY]${NC}"
+
     local timestamp=$(date +%Y%m%d_%H%M%S)
     local output_dir="../dumps"
     mkdir -p "$output_dir"
@@ -113,7 +121,7 @@ remote_forensic_stream() {
     echo -e "${GREEN}[+] Streaming memory to $target_ip:$target_port...${NC}"
     echo -e "${YELLOW}[*] Calculating local integrity hash (SHA256) during stream...${NC}"
 
-    if dd if=/dev/mem bs=1M count=100 2>/dev/null | tee >(sha256sum > "$output_dir/remote_stream_$timestamp.sha256") | nc -v "$target_ip" "$target_port"; then
+    if dd if=/dev/mem bs=1M count=100 2>/dev/null | tee >(sha256sum > "$output_dir/remote_stream_$timestamp.sha256") | nc "$target_ip" "$target_port"; then
         echo -e "${GREEN}[+] Remote stream finished.${NC}"
     else
         echo -e "${RED}[!] Stream interrupted. Potential Kernel restriction (STRICT_DEVMEM).${NC}"
@@ -123,22 +131,22 @@ remote_forensic_stream() {
 
 while true; do
     clear
-    echo -e "${GREEN}🐧 S.I.R.E.N. - Forensic Memory Streamer${NC}"
-    echo "------------------------------------------"
+    echo -e "${GREEN}🐧 S.I.R.E.N. - Shell Interactive Runtime Entity Notifier${NC}"
+    echo "---------------------------------------------------------"
     echo -e "1) Map Memory (iomem)"
     echo -e "2) Test Pipeline (/proc/version)"
     echo -e "3) Live Memory Extraction (DANGEROUS)"
     echo -e "4) Automated Safe Scan (BETA)"
     echo -e "5) Remote Forensic Stream (Netcat)"
     echo -e "6) Exit"
-    echo "------------------------------------------"
+    echo "---------------------------------------------------------"
     read -p "Select an option: " opt
 
     case $opt in
         1) map_system_ram ;;
         2) stream_analysis "/proc/version" ;;
         3)
-            echo -e "${RED}⚠️  ACTION REQUIRED: To prevent system freezing, ignore reserved ranges.${NC}"
+            echo -e "${RED}⚠️  ACTION REQUIRED: Bypass reserved ranges?${NC}"
             read -p "Continue with 100MB sample from /dev/mem? (y/n): " confirm
             [[ $confirm == "y" ]] && stream_analysis "/dev/mem"
             ;;
