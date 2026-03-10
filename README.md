@@ -1,8 +1,10 @@
 # 🐧 S.I.R.E.N - Shell Interactive Runtime Entity Notifier
 
-![Linux](https://img.shields.io/badge/platform-linux-blue)
-![Bash](https://img.shields.io/badge/language-bash-green)
-![License](https://img.shields.io/badge/license-MIT-red)
+[![Linux](https://img.shields.io/badge/platform-linux-blue)](https://www.kernel.org)
+
+[![Bash](https://img.shields.io/badge/language-bash-green)](https://www.gnu.org/software/bash/)
+
+[![License](https://img.shields.io/badge/license-MIT-red)](LICENSE)
 
 High-speed forensic memory acquisition tool focused on live streaming and integrity validation.
 
