@@ -136,10 +136,11 @@ To bypass this for forensic purposes, add `iomem=relaxed` to your boot parameter
 
 ## ● Roadmap
 
-- [x] Automated safe-range extraction (Beta optimization).
-- [ ] Integrated RAM compression during exfiltration.
+- [x] Automated safe-range extraction with kernel-level error handling.
+- [x] Pre-flight network connectivity validation (Option 5).
+- [ ] Integrated RAM compression during exfiltration (zstd/gzip).
 - [ ] Support for Lime/LiME memory drivers.
-- [ ] JSON metadata report generation.
+- [ ] JSON metadata report generation (Forensic Timeline).
 
 ## ● License
 
