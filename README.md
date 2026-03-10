@@ -54,6 +54,16 @@ All inspection is designed to minimize the forensic footprint on the target syst
 [!] Starting acquisition from: /dev/mem
 [+] Pipeline completed successfully. Results in ../dumps
 ```
+## ● Project in Action
+
+![Memory Mapping](./Imagens/siren1.png)
+*1- Detection of safe System RAM regions using /proc/iomem.*
+
+![Pipeline Validation](./Imagens/siren2.png)
+*2- Acquisition pipeline validation before performing live memory extraction.*
+
+![Remote Forensic Streaming](./Imagens/siren3.png)
+*3- Remote forensic memory streaming using Netcat with live SHA256 integrity verification.*
 
 ## ● Remote Forensic Streaming (Option 5)
 
