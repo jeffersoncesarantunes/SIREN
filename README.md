@@ -1,10 +1,16 @@
 # 🐧 S.I.R.E.N - Shell Interactive Runtime Entity Notifier
 
 [![Linux](https://img.shields.io/badge/platform-linux-blue)](https://kernel.org)
-[![Bash](https://img.shields.io/badge/language-bash-green)](https://www.gnu.org/software/bash/)
+[![Bash](https://img.shields.io/badge/language-bash-green)](https://www.gnu.org)
 [![License](https://img.shields.io/badge/license-MIT-red)](LICENSE)
 ![Version](https://img.shields.io/badge/version-1.3.0-orange)
 ![Status](https://img.shields.io/badge/status-active-success)
+
+## 🌐 Contact
+
+[![Discord](https://img.shields.io/badge/Discord-Jefferson-5865F2?logo=discord&logoColor=white)](https://discord.com/users/1476405883733807247)
+[![X](https://img.shields.io/badge/X-@j3ff3rsonc3sar-000000?logo=x&logoColor=white)](https://x.com/j3ff3rsonc3sar)
+[![Mastodon](https://img.shields.io/badge/Mastodon-@jeffersoncesar-6364FF?logo=mastodon&logoColor=white)](https://mastodon.social/@jeffersoncesar)
 
 High-speed Linux memory forensics tool for live acquisition, streaming and integrity auditing.
 
